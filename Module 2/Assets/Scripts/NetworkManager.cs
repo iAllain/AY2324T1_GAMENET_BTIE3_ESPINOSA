@@ -52,6 +52,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         cachedRoomList = new Dictionary<string, RoomInfo>();
         roomListGO = new Dictionary<string, GameObject>();
         ActivatePanel(loginUIPanel);
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     void Update()
@@ -124,6 +126,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         ActivatePanel(joinRandomRoomPanel);
         PhotonNetwork.JoinRandomRoom();
+    }
+    
+    public void OnStartGameButtonClicked()
+    {
+        PhotonNetwork.LoadLevel("GameScene");
     }
     #endregion
     #region PUN Callbacks
