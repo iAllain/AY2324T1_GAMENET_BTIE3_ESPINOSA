@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.UI;
+using Photon.Pun.Demo.PunBasics;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {
@@ -14,12 +16,23 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
     public PlayerMovementController playerMovementController;
     public Camera fpsCamera;
 
+    private Animator animator;
+    public Avatar fpsAvatar, nonFpsAvatar;
+
+    private Shooting shooting;
+
     void Start()
     {
         playerMovementController = this.GetComponent<PlayerMovementController>();
+        animator = this.GetComponent<Animator>();
 
         fpsModel.SetActive(photonView.IsMine);
         nonFpsModel.SetActive(!photonView.IsMine);
+
+        animator.SetBool("isLocalPlayer", photonView.IsMine);
+        animator.avatar = photonView.IsMine ? fpsAvatar : nonFpsAvatar;
+
+        shooting = this.GetComponent<Shooting>();
 
         if (photonView.IsMine)
         {
@@ -27,6 +40,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
             playerMovementController.fixedTouchField = playerUi.transform.Find("RotationTouchFieldPanel").GetComponent<FixedTouchField>();
             playerMovementController.joystick = playerUi.transform.Find("Fixed Joystick").GetComponent<Joystick>();
             fpsCamera.enabled = true;
+
+            playerUi.transform.Find("FireButton").GetComponent<Button>().onClick.AddListener(() => shooting.Fire());
         }
         else
         {
