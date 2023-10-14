@@ -5,6 +5,7 @@ using Photon.Pun;
 using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine.UI;
 using Photon.Pun.Demo.PunBasics;
+using TMPro;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {
@@ -21,6 +22,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
 
     private Shooting shooting;
 
+    public TextMeshProUGUI playerName;
+
     void Start()
     {
         playerMovementController = this.GetComponent<PlayerMovementController>();
@@ -33,6 +36,8 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
         animator.avatar = photonView.IsMine ? fpsAvatar : nonFpsAvatar;
 
         shooting = this.GetComponent<Shooting>();
+        
+        playerName.text = photonView.Owner.NickName;
 
         if (photonView.IsMine)
         {

@@ -6,6 +6,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.IO;
 using ExitGames.Client.Photon.StructWrapping;
+using Unity.VisualScripting;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -46,7 +47,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     private Dictionary<string, GameObject> roomListGO;
     private Dictionary<int, GameObject> playerListGO;
 
+    public static NetworkManager instance;
+
     #region Unity Functions
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     void Start()
     {
         cachedRoomList = new Dictionary<string, RoomInfo>();

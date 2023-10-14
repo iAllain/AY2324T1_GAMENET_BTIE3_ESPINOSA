@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,10 +26,6 @@ public class Shooting : MonoBehaviourPunCallbacks
         healthBar.fillAmount = currentHealth / startHealth;
 
         animator = this.GetComponent<Animator>();
-    }
-
-    void Update()
-    {
         
     }
 
@@ -53,10 +51,10 @@ public class Shooting : MonoBehaviourPunCallbacks
         this.currentHealth -= damage;
         this.healthBar.fillAmount = currentHealth / startHealth;
 
-        if (currentHealth <= 0)
+        if (currentHealth == 0)
         {
             Die();
-            Debug.Log(info.Sender.NickName + " Killed " + info.photonView.Owner.NickName);
+            IncreaseScore(info);
         }
     }
 
@@ -94,10 +92,7 @@ public class Shooting : MonoBehaviourPunCallbacks
         animator.SetBool("isDead", false);
         respawnText.GetComponent<TextMeshProUGUI>().text = "";
 
-        int randomX = Random.Range(-10, 10);
-        int randomZ = Random.Range(-10, 10);
-
-        this.transform.position = new Vector3(randomX, 0, randomZ);
+        this.transform.position = GameManager.instance.SpawnPlayer();
         transform.GetComponent<PlayerMovementController>().enabled = true;
 
         photonView.RPC("RegainHealth", RpcTarget.AllBuffered);
@@ -108,5 +103,18 @@ public class Shooting : MonoBehaviourPunCallbacks
     {
         currentHealth = 100;
         healthBar.fillAmount = currentHealth / startHealth;
+    }
+
+    private void IncreaseScore(PhotonMessageInfo info)
+    {
+        info.Sender.AddScore(1);
+
+        if (info.Sender.GetScore() == 9)
+        {
+            GameManager.instance.EndScreen(info.Sender);
+        }
+                    
+        GameManager.instance.KillReportUpdate(info.Sender, info.photonView.Owner);
+        Debug.Log(info.Sender.NickName + " has a score of " + info.Sender.GetScore());
     }
 }
