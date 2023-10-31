@@ -2,12 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 
 public class RacingGameManager : MonoBehaviour
 {
     public GameObject[] vehiclePrefabs;
     public Transform[] startingPositions;
+    public GameObject[] finisherTextTMPro;
+    
+    public static RacingGameManager instance = null;
 
+    public TextMeshProUGUI timeText;
+
+    public List<GameObject> lapTriggers = new List<GameObject>();
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         if (PhotonNetwork.IsConnectedAndReady)
@@ -23,6 +44,11 @@ public class RacingGameManager : MonoBehaviour
                 Vector3 instantiatePosition = startingPositions[actorNumber-1].position;
                 PhotonNetwork.Instantiate(vehiclePrefabs[(int)playerSelectionNumber].name, instantiatePosition, Quaternion.identity);
             }
+        }
+
+        foreach (GameObject go in finisherTextTMPro)
+        {
+            go.SetActive(false);
         }
     }
 
