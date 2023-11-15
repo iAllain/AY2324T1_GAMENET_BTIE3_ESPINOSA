@@ -105,6 +105,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             roomOptions.CustomRoomPropertiesForLobby = roomPropertiesInLobby;
             roomOptions.CustomRoomProperties = customRoomProperties;
+                        
+            if (roomOptions.CustomRoomProperties.ContainsValue("dr"))
+            {
+                roomOptions.MaxPlayers = 3;
+            }
+
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
     }
@@ -265,6 +271,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             roomOptions.CustomRoomPropertiesForLobby = roomPropertiesInLobby;
             roomOptions.CustomRoomProperties = customRoomProperties;
+
+            if (roomOptions.CustomRoomProperties.ContainsValue("dr"))
+            {
+                roomOptions.MaxPlayers = 3;
+            }
+
             PhotonNetwork.CreateRoom(roomName, roomOptions);
         }
     }
