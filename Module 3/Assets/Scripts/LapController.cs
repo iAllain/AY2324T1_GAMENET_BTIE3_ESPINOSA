@@ -56,11 +56,14 @@ public class LapController : MonoBehaviourPunCallbacks
     }
 
     void Start()
-    {
-        foreach (GameObject go in RacingGameManager.instance.lapTriggers)
+    {       
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("rc"))
         {
-            lapTriggers.Add(go);
-        }    
+            foreach (GameObject go in RacingGameManager.instance.lapTriggers)
+            {
+                lapTriggers.Add(go);
+            }  
+        }
     }
 
     private void OnTriggerEnter(Collider col)

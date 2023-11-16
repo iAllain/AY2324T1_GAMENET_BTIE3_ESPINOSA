@@ -11,8 +11,15 @@ public class CountdownManager : MonoBehaviourPunCallbacks
     public float timeToStartRace = 5.0f;
 
     void Start()
-    {
-        timerText = RacingGameManager.instance.timeText;
+    {        
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("rc"))
+        {
+            timerText = RacingGameManager.instance.timeText;
+        }
+        else if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("dr"))
+        {
+            timerText = DeathRaceManager.instance.timeText;
+        }
     }
 
     void Update()
@@ -48,6 +55,7 @@ public class CountdownManager : MonoBehaviourPunCallbacks
     public void StartRace()
     {
         GetComponent<VehicleMovement>().isControlEnabled = true;
+        GetComponent<PlayerShooting>().isControlEnabled = true;
         this.enabled = false;
     }
 }
