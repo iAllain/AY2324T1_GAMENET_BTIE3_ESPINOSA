@@ -586,7 +586,7 @@ Transform:
   m_GameObject: {fileID: 3137734044205984140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.026541, y: 1.12, z: -0.074556}
+  m_LocalPosition: {x: -0.026541, y: 1.352, z: -0.074556}
   m_LocalScale: {x: 0.5669, y: 0.5669, z: 0.5669}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -677,12 +677,12 @@ GameObject:
   - component: {fileID: 5149551517007839022}
   - component: {fileID: 7629296013050093115}
   - component: {fileID: -783279545227706724}
-  - component: {fileID: -4636802156146936416}
   - component: {fileID: 3378202860604722883}
   - component: {fileID: -5903926394926983157}
-  - component: {fileID: 8456008905054515263}
   - component: {fileID: 5794459254859862516}
   - component: {fileID: -5264900527933467749}
+  - component: {fileID: -4636802156146936416}
+  - component: {fileID: 8456008905054515263}
   m_Layer: 0
   m_Name: Black
   m_TagString: Player
@@ -795,22 +795,6 @@ MonoBehaviour:
   playerName: {fileID: 7184037939000282860}
   turret: {fileID: 3137734044205984140}
   HealthBar: {fileID: 5375361690481514032}
---- !u!114 &-4636802156146936416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3334473824143735710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!114 &3378202860604722883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -838,6 +822,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lapTriggers: []
+--- !u!114 &5794459254859862516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3334473824143735710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84089de4c8f6b82468e0a7f581270341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretTransform: {fileID: 2308602256781476417}
+  barrelTransform: {fileID: 3476477318498070823}
+  bulletSpawnLoc: {fileID: 3899340507623124372}
+  axes: 0
+  sensitivityX: 15
+  sensitivityY: 15
+  minimumX: -360
+  maximumX: 360
+  minimumY: -60
+  maximumY: 60
+  startHealth: 100
+  currentHealth: 100
+  healthBar: {fileID: 4083013564523970814}
+  isControlEnabled: 0
+--- !u!114 &-5264900527933467749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3334473824143735710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3ba7774ea507d41be3da5f94cce85c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4636802156146936416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3334473824143735710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!65 &8456008905054515263
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -857,47 +895,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.9137287, y: 1.9939691, z: 6.0494847}
-  m_Center: {x: -0.01837954, y: 0.49698442, z: 0.050838884}
---- !u!114 &5794459254859862516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3334473824143735710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84089de4c8f6b82468e0a7f581270341, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turretTransform: {fileID: 2308602256781476417}
-  barrelTransform: {fileID: 3476477318498070823}
-  bulletPrefab: {fileID: 7615751283387281009, guid: 3e26e6590b6b16c4aab5db3b90b1f6bc, type: 3}
-  bulletSpawnLoc: {fileID: 3899340507623124372}
-  axes: 0
-  sensitivityX: 15
-  sensitivityY: 15
-  minimumX: -360
-  maximumX: 360
-  minimumY: -60
-  maximumY: 60
-  startHealth: 100
-  healthBar: {fileID: 4083013564523970814}
-  isControlEnabled: 0
---- !u!114 &-5264900527933467749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3334473824143735710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f3ba7774ea507d41be3da5f94cce85c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCars: []
+  m_Size: {x: 2.9137287, y: 1.1106646, z: 6.0494847}
+  m_Center: {x: -0.01837954, y: 0.05533183, z: 0.050838888}
 --- !u!1 &3899340507623124372
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +953,7 @@ Transform:
   m_GameObject: {fileID: 3928794298650455184}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.197, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

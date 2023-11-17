@@ -5,16 +5,15 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using TMPro;
+using Photon.Pun.Demo.Cockpit;
 
 public class BattleRoyaleController : MonoBehaviourPunCallbacks
 {
-    public List<GameObject> playerCars = new List<GameObject>();
-
     public enum RaiseEventsCode
     {
         WhoDiedEventCode
     }
-    private int finishOrder = 3;
+    private int finishOrder = 0;
 
     private void OnEnable()
     {
@@ -27,12 +26,9 @@ public class BattleRoyaleController : MonoBehaviourPunCallbacks
     }
     void Start()
     {
-        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("rc"))
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("dr"))
         {
-            foreach (GameObject go in DeathRaceManager.instance.playerCars)
-            {
-                playerCars.Add(go);
-            }  
+            finishOrder = PhotonNetwork.CurrentRoom.PlayerCount + 1;
         }
     }
 
@@ -62,16 +58,19 @@ public class BattleRoyaleController : MonoBehaviourPunCallbacks
                 orderTMPro.GetComponent<TextMeshProUGUI>().text = finishOrder + " " + nicknameOfFinishedPlayer + "(YOU)";
                 orderTMPro.GetComponent<TextMeshProUGUI>().color = Color.red;
             }
+
+            CheckRemainingPlayers();
         }
     }
 
     public void OnPlayerDeath()
     {
         GetComponent<PlayerSetup>().camera.transform.parent = null;
-        GetComponent<VehicleMovement>().enabled = false;
-        GetComponent<PlayerShooting>().enabled = false;
+        GetComponent<VehicleMovement>().isControlEnabled = false;
+        GetComponent<PlayerShooting>().isControlEnabled = false;
 
         finishOrder--;
+        DeathRaceManager.instance.remainingPlayers--;
 
         string nickname = photonView.Owner.NickName;
         int viewId = photonView.ViewID;
@@ -90,5 +89,13 @@ public class BattleRoyaleController : MonoBehaviourPunCallbacks
         };
 
         PhotonNetwork.RaiseEvent((byte) RaiseEventsCode.WhoDiedEventCode, data, raisedEventOptions, sendOption);
+    }
+
+    private void CheckRemainingPlayers()
+    {
+        if (DeathRaceManager.instance.remainingPlayers == 1 && GetComponent<VehicleMovement>().isControlEnabled)
+        {
+            OnPlayerDeath();
+        }
     }
 }

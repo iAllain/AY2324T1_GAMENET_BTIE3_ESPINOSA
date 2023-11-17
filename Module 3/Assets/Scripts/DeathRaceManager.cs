@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using Photon.Realtime;
+using ExitGames.Client.Photon.StructWrapping;
 
 public class DeathRaceManager : MonoBehaviour
 {
@@ -11,9 +13,15 @@ public class DeathRaceManager : MonoBehaviour
     public GameObject[] finisherTextTMPro;
     
     public static DeathRaceManager instance = null;
-    public List<GameObject> playerCars = new List<GameObject>();
+
+    public int remainingPlayers = 0;
 
     public TextMeshProUGUI timeText;
+
+    [Header("Kill Report Panel")]
+    public GameObject killReportPanel;
+    public GameObject killStatusPrefab;
+    public GameObject killStatusParent;
 
     void Awake()
     {
@@ -41,7 +49,7 @@ public class DeathRaceManager : MonoBehaviour
                 int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
 
                 Vector3 instantiatePosition = startingPositions[actorNumber-1].position;
-                GameObject playerCar = PhotonNetwork.Instantiate(vehiclePrefabs[(int)playerSelectionNumber].name, instantiatePosition, Quaternion.identity);
+                PhotonNetwork.Instantiate(vehiclePrefabs[(int)playerSelectionNumber].name, instantiatePosition, Quaternion.identity);
             }
         }
 
@@ -49,11 +57,21 @@ public class DeathRaceManager : MonoBehaviour
         {
             go.SetActive(false);
         }
+
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("dr"))
+        {
+            remainingPlayers = PhotonNetwork.CurrentRoom.PlayerCount;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void KillReportUpdate(Player killingPlayer, Player dyingPlayer)
     {
-        
+        GameObject listItem = Instantiate(killStatusPrefab);
+        listItem.transform.SetParent(killStatusParent.transform);
+        listItem.transform.localScale = Vector3.one;
+
+        listItem.GetComponent<TextMeshProUGUI>().text = killingPlayer.NickName + " has killed " + dyingPlayer.NickName;
+
+        Destroy(listItem, 3.0f);
     }
 }

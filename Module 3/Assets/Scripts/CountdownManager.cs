@@ -53,9 +53,16 @@ public class CountdownManager : MonoBehaviourPunCallbacks
 
     [PunRPC]
     public void StartRace()
-    {
-        GetComponent<VehicleMovement>().isControlEnabled = true;
-        GetComponent<PlayerShooting>().isControlEnabled = true;
+    {        
+        if(PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("rc"))
+        {
+            GetComponent<VehicleMovement>().isControlEnabled = true;
+        }
+        else if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsValue("dr"))
+        {
+            GetComponent<VehicleMovement>().isControlEnabled = true;
+            GetComponent<PlayerShooting>().isControlEnabled = true;
+        }
         this.enabled = false;
     }
 }

@@ -2,18 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using Photon.Pun;
-using Unity.VisualScripting;
-using Photon.Pun.UtilityScripts;
-using Photon.Pun.Demo.Asteroids;
 
 public class PlayerShooting : MonoBehaviourPunCallbacks
 {
     public Transform turretTransform;
     public Transform barrelTransform;
 
-    public GameObject bulletPrefab;
     public GameObject bulletSpawnLoc;
 
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
@@ -26,12 +21,12 @@ public class PlayerShooting : MonoBehaviourPunCallbacks
 	public float minimumX = -90F;
 	public float maximumX = 90;
 
-	public float minimumY = -45F;
-	public float maximumY = 45F;
+	public float minimumY = -20F;
+	public float maximumY = 20F;
 
     [Header("HP Related Items")]
     public float startHealth = 100;
-    private float currentHealth;
+    public float currentHealth;
     public Image healthBar;
 
 	float rotationY = 0F;
@@ -83,8 +78,8 @@ public class PlayerShooting : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Debug.Log("Fire");
-            FireRayCast();
-            //FireProjectile();
+            //FireRayCast();
+            FireProjectile();
         }
     }
 
@@ -105,28 +100,21 @@ public class PlayerShooting : MonoBehaviourPunCallbacks
     }
 
     public void FireProjectile()
-    {
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnLoc.transform.position, bulletSpawnLoc.transform.rotation);
-        bullet.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
+    { 
+        GameObject bullet = PhotonNetwork.Instantiate("BulletPrefab", bulletSpawnLoc.transform.position, bulletSpawnLoc.transform.rotation);
+        bullet.GetComponentInChildren<BulletBehaviour>().bulletOwner = photonView.Owner.NickName;
     }
 
     [PunRPC]
     public void TakeDamage(int damage, PhotonMessageInfo info)
     {
-        currentHealth -= damage;
-        healthBar.fillAmount = currentHealth / startHealth;
+        this.currentHealth -= damage;
+        this.healthBar.fillAmount = currentHealth / startHealth;
 
         if (currentHealth == 0)
         {
            GetComponent<BattleRoyaleController>().OnPlayerDeath();
-        }
-    }
-
-    public void Die()
-    {
-        if (photonView.IsMine)
-        {
-            Debug.Log("This car is dead");
+           DeathRaceManager.instance.KillReportUpdate(info.Sender, info.photonView.Owner);
         }
     }
 }
